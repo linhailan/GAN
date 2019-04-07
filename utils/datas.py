@@ -147,4 +147,4 @@ class mnist():
 
 if __name__ == '__main__':
 	data = face3D()
-	print data(17).shape
+	print(data(17).shape)
