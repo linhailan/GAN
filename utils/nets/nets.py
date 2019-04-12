@@ -3,8 +3,7 @@ import tensorflow.contrib as tc
 import tensorflow.contrib.layers as tcl
 
 def leaky_relu(x, alpha=0.2):
-	return tf.maximum(tf.minimum(0.0, alpha * x), x
-)
+	return tf.maximum(tf.minimum(0.0, alpha * x), x)
 
 def lrelu(x, leak=0.2, name="lrelu"):
 	with tf.variable_scope(name):
@@ -132,9 +131,11 @@ class G_conv(object):
 
 class D_conv(object):
 	def __init__(self):
+		print("执行 D_conv 的 __init__ 函数")
 		self.name = 'D_conv'
 
 	def __call__(self, x, reuse=False):
+		print("执行 D_conv 的 __init__ 函数")
 		with tf.variable_scope(self.name) as scope:
 			if reuse:
 				scope.reuse_variables()
@@ -157,13 +158,16 @@ class D_conv(object):
 			
 	@property
 	def vars(self):
+		print("执行 D_conv 的 __init__ 函数")
 		return tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=self.name)
 
 class C_conv(object):
 	def __init__(self):
+		print("执行 C_conv 的 __init__ 函数")
 		self.name = 'C_conv'
 
 	def __call__(self, x, reuse=False):
+		print("执行 C_conv 的 __call__ 函数")
 		with tf.variable_scope(self.name) as scope:
 			if reuse:
 				scope.reuse_variables()
@@ -186,13 +190,16 @@ class C_conv(object):
 			return q
 	@property
 	def vars(self):
+		print("执行 C_conv 的 vars 函数")
 		return [var for var in tf.global_variables() if self.name in var.name]
 
 class V_conv(object):
 	def __init__(self):
+		print("执行 V_conv 的 __init__ 函数")
 		self.name = 'V_conv'
 
 	def __call__(self, x, reuse=False):
+		print("执行 V_conv 的 __call__ 函数")
 		with tf.variable_scope(self.name) as scope:
 			if reuse:
 				scope.reuse_variables()
@@ -213,35 +220,49 @@ class V_conv(object):
 			return v
 	@property
 	def vars(self):
+		print("执行 V_conv 的 vars 函数")
 		return [var for var in tf.global_variables() if self.name in var.name]
 
 
 # -------------------------------- MNIST for test
 class G_conv_mnist(object):
 	def __init__(self):
+		print("执行 G_conv_mnist 的 __init__ 函数")
 		self.name = 'G_conv_mnist'
 
 	def __call__(self, z):
+		print("执行 G_conv_mnist 的 __call__ 函数")
 		with tf.variable_scope(self.name) as scope:
-			#g = tcl.fully_connected(z, 1024, activation_fn = tf.nn.relu, normalizer_fn=tcl.batch_norm,
-			#						weights_initializer=tf.random_normal_initializer(0, 0.02))
-			g = tcl.fully_connected(z, 7*7*128, activation_fn = tf.nn.relu, normalizer_fn=tcl.batch_norm,
+			# g = tcl.fully_connected(z, 1024, activation_fn = tf.nn.relu, normalizer_fn=tcl.batch_norm,
+			# 						weights_initializer=tf.random_normal_initializer(0, 0.02))
+
+			g = tcl.fully_connected(z,
+									7*7*128,
+									activation_fn = tf.nn.relu,
+									normalizer_fn=tcl.batch_norm,
 									weights_initializer=tf.random_normal_initializer(0, 0.02))
+
 			g = tf.reshape(g, (-1, 7, 7, 128))  # 7x7
 			g = tcl.conv2d_transpose(g, 64, 4, stride=2, # 14x14x64
-									activation_fn=tf.nn.relu, normalizer_fn=tcl.batch_norm, padding='SAME', weights_initializer=tf.random_normal_initializer(0, 0.02))
+									activation_fn=tf.nn.relu,
+									 normalizer_fn=tcl.batch_norm,
+									 padding='SAME',
+									 weights_initializer=tf.random_normal_initializer(0, 0.02))
 			g = tcl.conv2d_transpose(g, 1, 4, stride=2, # 28x28x1
 										activation_fn=tf.nn.sigmoid, padding='SAME', weights_initializer=tf.random_normal_initializer(0, 0.02))
 			return g
 	@property
 	def vars(self):
+		print("执行 G_conv_mnist 的 vars 函数")
 		return tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=self.name)
 	
 class D_conv_mnist(object):
 	def __init__(self):
+		print("执行D_conv_mnist的__init__函数")
 		self.name = 'D_conv_mnist'
 
 	def __call__(self, x, reuse=False):
+		print("执行D_conv_mnist的__call__函数")
 		with tf.variable_scope(self.name) as scope:
 			if reuse:
 				scope.reuse_variables()
@@ -258,13 +279,16 @@ class D_conv_mnist(object):
 			return d, q
 	@property
 	def vars(self):
+		print("执行D_conv_mnist的vars函数")
 		return tf.get_collection(tf.GraphKeys.TRAINABLE_VARIABLES, scope=self.name)
 
 class C_conv_mnist(object):
 	def __init__(self):
+		print("执行 C_conv_mnist 的 __init__ 函数")
 		self.name = 'C_conv_mnist'
 
 	def __call__(self, x, reuse=False):
+		print("执行 C_conv_mnist 的 __call__ 函数")
 		with tf.variable_scope(self.name) as scope:
 			if reuse:
 				scope.reuse_variables()
@@ -281,5 +305,6 @@ class C_conv_mnist(object):
 			return c
 	@property
 	def vars(self):
+		print("执行 C_conv_mnist 的 vars 函数")
 		return [var for var in tf.global_variables() if self.name in var.name]
 

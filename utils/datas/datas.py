@@ -7,10 +7,11 @@ import matplotlib as mpl
 mpl.use('Agg')
 import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+from tutorials_mnist import input_data
 
-from tensorflow.examples.tutorials.mnist import input_data
 
-prefix = './Datas/'
+
+prefix = '../Datas/'
 def get_img(img_path, crop_h, resize_h):
 	img=scipy.misc.imread(img_path).astype(np.float)
 	# crop resize
@@ -114,7 +115,7 @@ class mnist():
 		datapath = prefix + 'mnist'
 		self.X_dim = 784 # for mlp
 		self.z_dim = 100
-		self.y_dim = 10
+		self.y_dim = 100
 		self.size = 28 # for conv
 		self.channel = 1 # for conv
 		self.data = input_data.read_data_sets(datapath, one_hot=True)
